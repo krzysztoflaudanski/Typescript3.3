@@ -1,11 +1,9 @@
 import { FC, useState } from 'react';
+import BooksList from './components/BooksList/BooksList';
+import { Book } from './interfaces/Book.interface';
+import AddBookForm from './components/AddBookForm/AddBookForm';
 
-interface Book {
-  id: string;
-  title: string;
-  author: string;
-  price: number;
-}
+
 const booksData: Book[] = [
   {
     id: 'te1314derw',
@@ -22,13 +20,24 @@ const booksData: Book[] = [
 ];
 
 const App: FC = () => {
-  const [books, setBooks] = useState(booksData);
+  const [books, setBooks] = useState<Book[]>(booksData);
+
+  const addBook = (book: Book) => {
+    setBooks([...books, book])
+  }
+
+  const deleteBook = (book: Book) => {
+    const updatedBooks = books.filter(b => b.id !== book.id);
+    setBooks(updatedBooks);
+  }
 
   return (
     <div className="container">
       <header>
         <h1>Books App</h1>
       </header>
+      <BooksList books={books} deleteBook={deleteBook} />
+      <AddBookForm addBook={addBook} />
     </div>
   );
 }
