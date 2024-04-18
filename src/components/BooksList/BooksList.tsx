@@ -2,18 +2,16 @@ import { FC } from 'react';
 import { Book } from './../../interfaces/Book.interface';
 import BookItem from '../BookItem/BookItem';
 import './BooksList.css';
+import { useAppSelector, useAppDispatch } from './../../utils/redux';
+import { removeBook } from './../../redux/booksRedux';
 
-type Props = {
-    deleteBook: (book: Book) => void;
-    books: Book[]
-}
-
-const BooksList: FC<Props> = ({ books, deleteBook }) => {
-
+const BooksList: FC = () => {
+    const books = useAppSelector(state => state.books);
+    const dispatch = useAppDispatch();
 
     return (
         <ul className="books-list">
-            {books.map((book: Book) => <BookItem key={book.id} book={book} deleteBook={deleteBook} />)}
+            {books.map((book: Book) => <BookItem key={book.id} book={book} removeBook={(id: string) => dispatch(removeBook(id))} />)}
         </ul>
     );
 };
